@@ -1,16 +1,14 @@
-const cors = require('cors')
-require('../db/mongoose')
-const express = require('express')
-const app = express()
 
-const port = process.env.PORT || 5000
-require('../db/mongoose')
-const userRouter = require('../Routes/userRoute')
+require('../db/mongoose');
 
-app.use(express.json())
-app.use(cors())
-app.use('/user', userRouter)
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8000;
+const OpportunityRouter = require('../routes/OpportunityRoute');
+app.use(OpportunityRouter);
+
+app.use(express.json());
 
 app.listen(port, () => {
-  console.log("the localhost is " + port)
-})
+    console.log('Server is running on port', port);
+});
