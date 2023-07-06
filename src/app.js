@@ -38,10 +38,9 @@ app.use((err, req, res, next) => {
   
   // for mentee ruseme
   app.use("/uploads", express.static("uploads"));
-  
 
-const port = process.env.PORT || 5000;
-app.use(mentorRoutes)
+  
+  app.use(mentorRoutes)
 
 ////////////////////////////////////////////////
 
