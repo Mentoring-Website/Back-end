@@ -32,8 +32,7 @@ app.use((err, req, res, next) => {
 
   return res.status(errorStatus).send(errorMessage);
 });
-
-// for mentee ruseme
+// for mentee resume
 app.use("/uploads", express.static("uploads"));
 
 
