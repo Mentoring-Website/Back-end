@@ -14,6 +14,10 @@ app.use(cookieParser())
 const port = process.env.PORT || 5000;
 app.use(mentorRoutes)
 
+return res.status(errorStatus).send(errorMessage);
+});
+// for mentee resume
+app.use("/uploads", express.static("uploads"));
 ////////////////////////////////////////////////
 
 app.get('/', (req, res) => {
