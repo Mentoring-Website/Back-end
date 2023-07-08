@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {Schema} =mongoose;
+const { Schema } = mongoose;
 const CommentSchema = new Schema(
   {
     mentorApplicationId: {
@@ -20,5 +20,5 @@ const CommentSchema = new Schema(
     timestamps: true,
   }
 );
-const Comment= mongoose.model("Comment",CommentSchema)
-module.exports=Comment
+const Comment = mongoose.model("Comment", CommentSchema)
+module.exports = Comment

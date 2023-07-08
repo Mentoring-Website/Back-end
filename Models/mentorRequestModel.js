@@ -48,7 +48,6 @@ const requestSchema = new mongoose.Schema(
     },
     duration: {
       ...mainkeys,
-      enum: ["2 months", "3 months", "open duration"],
     },
     mentee: {
       type: mongoose.Schema.Types.ObjectId,

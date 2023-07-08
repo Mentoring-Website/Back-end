@@ -8,15 +8,15 @@ const messageSchema = new mongoose.Schema({
     ref: 'User', // model
     required: true,
   },
-  receiverId: { 
+  receiverId: {
     type: String,
-    required: true 
+    required: true
   },
   messageContent: {
-    type: String, 
-    required: true 
+    type: String,
+    required: true
   },
-  sendDate: { 
+  sendDate: {
     type: Date,
     default: Date.now
   }

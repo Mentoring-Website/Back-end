@@ -18,21 +18,21 @@ const postRequests = (req, res, next) => {
 // getRequests////////////////////////
 const getRequests = (req, res, next) => {
   Request.findById({})
-  .then((request) => {
-    if (!request) {
-      return res.status(404).send("Unable to find user");
-    }
-    res.status(200).send(request);
-  })
-  .catch((e) => {
-    res.status(500).send(e);
-  });
+    .then((request) => {
+      if (!request) {
+        return res.status(404).send("Unable to find user");
+      }
+      res.status(200).send(request);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
+    });
 };
 
 // getRequestByID///////////////////
 const getRequestsByID = (req, res) => {
   const _id = req.params.id;
-  Request.findById( { _id, mentee: req.user._id })
+  Request.findById({ _id, mentee: req.user._id })
     .then((request) => {
       if (!request) {
         return res.status(404).send("Unable to find user");
@@ -49,7 +49,7 @@ const getRequestsByID = (req, res) => {
 const patchRequets = async (req, res) => {
   try {
     const _id = req.params.id;
-    const request = await Request.findByIdAndUpdate( { _id, mentee: req.user._id }, req.body, {
+    const request = await Request.findByIdAndUpdate({ _id, mentee: req.user._id }, req.body, {
       new: true,
       runValidators: true,
     });
@@ -66,10 +66,10 @@ const patchRequets = async (req, res) => {
 
 
 // deleteRequests///////////////////
-const deleteRequests=async (req, res) => {
+const deleteRequests = async (req, res) => {
   try {
     const _id = req.params.id;
-    const request = await Request.findByIdAndDelete( { _id, mentee: req.user._id });
+    const request = await Request.findByIdAndDelete({ _id, mentee: req.user._id });
     if (!request) {
       return res.status(404).send("Unable to find request");
     }
@@ -80,4 +80,4 @@ const deleteRequests=async (req, res) => {
 }
 
 
-module.exports = { postRequests, getRequests, getRequestsByID, patchRequets,deleteRequests };
+module.exports = { postRequests, getRequests, getRequestsByID, patchRequets, deleteRequests };

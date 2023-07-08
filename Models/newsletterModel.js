@@ -35,7 +35,7 @@ newsletterSchema.methods.transport = function () {
   };
   transporter.sendMail(mailOptions, function (err, res) {
     if (err) {
-        throw new Error('Error in Sending mail!! ')
+      throw new Error('Error in Sending mail!! ')
     }
   });
 };
