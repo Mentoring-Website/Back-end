@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const messageController = require("../Controllers/messageController");
+const messageController = require("../Controllers/messageController")
 const auth = require("../middleware/auth");
 const router = express.Router();
 // const upload = multer({ dest: 'uploads/' });
