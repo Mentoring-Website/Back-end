@@ -62,6 +62,10 @@ const opportunitySchema = mongoose.Schema(
             type: Date,
             required: true,
         },
+        progress:{
+            type:String,
+            enum:["open", "in progress", "close"],
+            },
         daysInWeek: {
             type: [String],
             required: true,
@@ -83,6 +87,21 @@ const opportunitySchema = mongoose.Schema(
     //to create tow document in database with category
     { timestamp: true }
 );
+// Before saving we add status of opportunity to the req
+opportunitySchema.pre('save', function (next) {
+    const currentDate = new Date();
+  
+    if (currentDate >= this.startDate && currentDate <= this.endDate) {
+      this.progress = 'in progress';
+    } else if (currentDate > this.endDate) {
+      this.progress = 'closed';
+      
+    } else {
+      this.progress = 'open';
+    }
+  
+    next();
+  });
 // create model
 const OpportunityModel = mongoose.model('opportunity', opportunitySchema);
 module.exports = OpportunityModel;

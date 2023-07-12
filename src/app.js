@@ -24,6 +24,7 @@ const errorHandle = require('../middleware/errorLogger')
 const corsOptions = require('../config/corsOptions')
 
 const calendar=require("../Routes/calenderRouter")
+const download = require('../Routes/downloadRouter')
 const port = process.env.PORT || 5000
 
 app.use(express.json())
@@ -45,6 +46,7 @@ app.use('/auth', socialLoginRouter);
 app.use('/comments', commentRouter);
 app.use(calendar)
 app.use("/uploads", express.static("uploads"));
+app.use(download)
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
@@ -53,5 +55,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log("The localhost is " + 5000)
+  console.log("The localhost is " + port)
 })
