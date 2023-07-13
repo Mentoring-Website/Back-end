@@ -3,6 +3,8 @@ const router = express.Router();
 const calendarController = require("../Controllers/calenderController");
 const auth = require("../middleware/auth");
 
-router.get("/", auth, calendarController.getCalendar);
+router.get("/", auth, calendarController.getMentorCalendar);
+
+router.get("/", auth, calendarController.getMenteeCalendar);
 
 module.exports = router;

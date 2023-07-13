@@ -3,8 +3,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 
-const User = require("./models/user");
-
+const User = require("./Models/userModel");
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -30,7 +29,7 @@ passport.use(
           done(null, existingUser);
         } else {
           const newUser = {
-            id: profile.id,
+            googleId: profile.id,
             name: profile.displayName,
             photo: profile.photos[0].value,
             email: profile.emails[0].value,
@@ -61,7 +60,7 @@ passport.use(
           done(null, existingUse);
         } else {
           const newUser = {
-            id: profile.id,
+            gitId: profile.id,
             name: profile.displayName,
             photo: profile.photos[0].value,
             email: profile.emails[0].value,
@@ -93,12 +92,12 @@ passport.use(
           done(null, existingUser);
         } else {
           const newUser = {
-            id: profile.id,
+            facebookId: profile.id,
             name: profile.displayName,
             photo: profile.photos[0].value,
             email: profile.emails[0].value,
           };
-          user = await User.create(newUser);
+          const user = await User.create(newUser);
           console.log("creating new user");
           done(null, user);
         }
