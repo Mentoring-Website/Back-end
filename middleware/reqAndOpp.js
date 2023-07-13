@@ -15,6 +15,7 @@ const authOpp = async (req, res, next) => {
     res.status(500).send(e.message);
   }
 };
+
 const authReq = async (req, res, next) => {
   try {
     const user = req.user;

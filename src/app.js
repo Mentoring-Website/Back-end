@@ -17,21 +17,19 @@ const commentRouter = require("../Routes/commentsRouter");
 const requestRounter = require("../Routes/requestRouter")
 const socialLoginRouter = require("../Routes/SocialAuthRouter");
 const newsletterRouter = require('../Routes/newsletterRouter')
-const passwordResetRouter=require('../Routes/resetPasswordRouter')
-const passwordForgetRouter=require('../Routes/forgetPasswordRouter')
+const passwordRouter = require('../Routes/PasswordRouter')
 const { logger } = require('../middleware/reglogger')
 const errorHandle = require('../middleware/errorLogger')
 const corsOptions = require('../config/corsOptions')
 
-const calendar=require("../Routes/calenderRouter")
+const calendar = require("../Routes/calenderRouter")
 const port = process.env.PORT || 5000
 
 app.use(express.json())
 app.use(cors(corsOptions))
 app.use(logger)
 app.use(errorHandle);
-app.use('/resetpassword', passwordResetRouter)
-app.use('/forgetpassword', passwordForgetRouter)
+app.use('/password', passwordRouter)
 app.use('/subscribe', newsletterRouter)
 app.use(passport.initialize());
 app.use('/mentor', mentorRouter)
