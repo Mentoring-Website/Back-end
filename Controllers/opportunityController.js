@@ -1,4 +1,5 @@
 const OpportunityModel = require('../Models/opportunityModel');
+const { deleteAvatarFile } = require('../middleware/upload');
 
 const getAllOpportunities = async (req, res) => {
     try {
@@ -44,30 +45,30 @@ const updateOpportunity = async (req, res) => {
 };
 
 const createOpportunity = async (req, res) => {
-  try {
-    const { startTime, endTime } = req.body;
-    const existingOpportunity = await OpportunityModel.findOne({
-      $or: [
-        { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
-        { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
-        { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
-      ],
-    });
+    try {
+        const { startTime, endTime } = req.body;
+        const existingOpportunity = await OpportunityModel.findOne({
+            $or: [
+                { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
+                { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
+                { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
+            ],
+        });
 
-    if (existingOpportunity) {
-      return res
-        .status(400)
-        .json({ error: "Cannot add opportunity in the same time duration" });
+        if (existingOpportunity) {
+            return res
+                .status(400)
+                .json({ error: "Cannot add opportunity in the same time duration" });
+        }
+
+        const opportunity = await OpportunityModel.create({
+            ...req.body,
+            owner: req.user._id,
+        });
+        res.status(201).json({ data: opportunity });
+    } catch (error) {
+        res.status(400).json(error.message);
     }
-
-    const opportunity = await OpportunityModel.create({
-      ...req.body,
-      owner: req.user._id,
-    });
-    res.status(201).json({ data: opportunity });
-  } catch (error) {
-    res.status(400).json(error.message);
-  }
 };
 
 
@@ -78,6 +79,8 @@ const deleteOpportunity = async (req, res) => {
         if (!opportunity) {
             return res.status(404).json({ msg: ` No opportunity for this id ${_id}` });
         }
+
+        deleteAvatarFile(user.avatar);
         res.status(204).send('deleted');
     } catch (error) {
         res.status(500).json({ error: error.message });
