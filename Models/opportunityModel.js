@@ -91,7 +91,7 @@ const opportunitySchema = mongoose.Schema(
 opportunitySchema.pre('save', function (next) {
     const currentDate = new Date();
   
-    if (currentDate >= this.startDate && currentDate <= this.endDate) {
+    if (currentDate > this.startDate && currentDate <= this.endDate) {
       this.progress = 'in progress';
     } else if (currentDate > this.endDate) {
       this.progress = 'closed';

@@ -1,46 +1,59 @@
 const fs = require("fs");
 const path = require('path')
-const baseUrl = "http://localhost:5000/cvfiles/";
+const User = require('../Models/userModel')
 
-const getListFiles = (req, res) => {
-  const directoryPath= path.join(__dirname,"../uploads/downloadCv") 
-  
+const uploadCV = async (req, res) => {
+  const menteeName = req.body.name;
+  const cvPath = req.file.path;
 
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      res.status(500).send({
-        message: "Unable to scan files!",
-      });
+  try {
+    const user = await User.findOne({ name: menteeName });
+
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
     }
 
-    let fileInfos = [];
+    user.cvPath = cvPath; // Set the cvPath property on the user object
+    await user.save();
 
-    files.forEach((file) => {
-      fileInfos.push({
-        name: file,
-        url: baseUrl + file,
-      });
-    });
-
-    res.status(200).send(fileInfos);
-  });
+    res.send("CV uploaded successfully");
+  } catch (error) {
+    console.log("Error uploading CV:", error);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
-const download = (req, res) => {
-  const fileName = req.params.name;
 
-const directoryPath= path.join(__dirname,"../../uploads/downloadCv/") 
 
-  res.download(directoryPath +fileName, fileName, (err) => {
-    if (err) {
-      res.status(500).send({
-        message: "Could not download the file. " + err,
-      });
+
+//////////////////////////////////////////////////////////////
+// Controller function to handle CV download
+const downloadcv = async (req, res) => {
+  const menteeName = req.params.name;
+
+  try {
+    const user = await User.findOne({ name: menteeName });
+
+    if (!user) {
+      res.status(404).send("CV not found");
+      return;
     }
-  });
+    console.log("CV Path:", user.cvPath); // Check the value of cvPath
+
+    if (!user.cvPath) {
+      res.status(404).send("CV not found");
+      return;
+    }
+    res.download(user.cvPath);
+  } catch (error) {
+    console.log("Error retrieving CV:", error);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 module.exports = {
-  getListFiles,
-  download,
+ 
+  uploadCV,
+  downloadcv,
 };
