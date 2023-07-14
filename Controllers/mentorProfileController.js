@@ -17,8 +17,8 @@ const PostMentor = async (req, res) => {
 
 const GetMentors = async (req, res) => {
   try {
-    const mentor = await Profile.find({}).populate({
-      path: "user",
+    const mentor = await Profile.find({lookingFor: "mentee"}).populate({
+      path: "user dealtWith",
       select: "-tokens",
     });
     res.status(200).send(mentor);
@@ -33,7 +33,7 @@ const getById = async (req, res) => {
   try {
     const _id = req.params.id;
     const mentor = await Profile.findById(_id).populate({
-      path: "user",
+      path: "user dealtWith",
       select: "-tokens",
     });
     if (!mentor) {
