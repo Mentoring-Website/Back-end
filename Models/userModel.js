@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
   facebookId: {
     type: String,
   },
+  cvPath: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,

@@ -50,6 +50,11 @@ const requestSchema = new mongoose.Schema(
       ...mainkeys,
       enum: ["2 months", "3 months", "open duration"],
     },
+    progress:{
+      type:String,
+      enum:["open", "in progress", "close"],
+      default:"open"
+  },
     mentee: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -67,6 +72,18 @@ const requestSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+// Before saving Request we add the situation of it automatically
+
+requestSchema.pre('save', function (next) {
+  if (this.status === 'accepted') {
+    this.progress = 'in progress';
+  } else if (this.status === 'Rejected') {
+    this.progress = 'closed';
+  } else {
+    this.progress = 'open';
+  }
+  next();
+});
 
 const Request = mongoose.model("Request", requestSchema);
 module.exports = { Request };
