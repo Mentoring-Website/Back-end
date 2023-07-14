@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const auth = require('../middleware/auth');
-const { authOpp } = require('../middleware/reqAndOpp')
+const { isMentor } = require('../middleware/reqAndOpp')
 const opportunityController = require('../Controllers/opportunityController');
 
-router.get('/', auth, authOpp, asyncHandler(opportunityController.getAllOpportunities));
-router.get('/:id', auth, authOpp, asyncHandler(opportunityController.getOpportunityById));
-router.patch('/:id', auth, authOpp, asyncHandler(opportunityController.updateOpportunity));
-router.post('/', auth, authOpp, asyncHandler(opportunityController.createOpportunity));
-router.delete('/:id', auth, authOpp, asyncHandler(opportunityController.deleteOpportunity));
+router.use(auth)
+
+router.post('/opp', isMentor, asyncHandler(opportunityController.createOpportunity));
+router.get('/opp', asyncHandler(opportunityController.getAllOpportunities));
+router.get('/opp/:id', isMentor, asyncHandler(opportunityController.getOpportunityById));
+router.patch('/opp/:id', isMentor, asyncHandler(opportunityController.updateOpportunity));
+router.delete('/opp/:id', isMentor, asyncHandler(opportunityController.deleteOpportunity));
 
 module.exports = router;

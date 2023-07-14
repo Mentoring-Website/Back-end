@@ -46,6 +46,12 @@ const ProfileSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
+    dealtWith: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }
+  ]
   },
   { timestamps: true }
 );

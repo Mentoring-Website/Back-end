@@ -2,9 +2,8 @@ const Profile = require("../Models/profileModel");
 const fs = require('fs');
 
 //show the list of mentorInfo
-const getAllMentee = (req, res, next) => {
-  Profile.find()
-    .populate({ path: "user", select: "-tokens" })
+const getAllMentee = (req, res, next) => {  Profile.find({lookingFor: "mentor"})
+.populate({ path: "user dealtWith", select: "-tokens" })
     .then((response) => {
       res.json({ response });
     })
@@ -29,8 +28,7 @@ const addNewMentee = (req, res, next) => {
     availableForHiring: req.body.availableForHiring,
     user: req.user._id,
   });
- 
-  // console.log(avatarPath)
+
   mentee.user = req.user._id;
   mentee.updateRole(mentee);
 
@@ -78,7 +76,7 @@ function deleteUploadedAvatar(avatarPath) {
 const getMentee = async (req, res, next) => {
   const _id = req.params.id;
   Profile.findById(_id)
-    .populate({ path: "user", select: "-tokens" })
+  .populate({ path: "user dealtWith", select: "-tokens" })
     .then((mentee) => {
       if (!mentee) {
         return res.status(404).send("mentee not found");
@@ -91,34 +89,29 @@ const getMentee = async (req, res, next) => {
 };
 
 // update mentor
-
-const updateMentee = (req, res, next) => {
-  const menteeId = req.params.id;
-
-  Profile.findByIdAndUpdate(
-    menteeId,
-    {
+const updateMentee = async (req, res, next) => {
+  try {
+    const menteeId = req.params.id;
+    const mentee = await Profile.findByIdAndUpdate(menteeId, {
       lockingFor: req.body.lockingFor,
       designation: req.body.designation,
       location: req.body.location,
       skills: req.body.skills,
       avatar: req.file ? req.file.filename : "",
       availableForHiring: req.body.availableForHiring,
-    },
-    { new: true }
-  )
-    .then((updatedMentee) => {
-      if (!updatedMentee) {
-        return res.status(404).send("Mentee not found.");
-      }
-      updatedMentee.updateRole(updatedMentee);
-      res.json(updatedMentee);
-    })
-    .catch((e) => {
-      console.log(e);
-      res.status(500).send("Could not update mentee.", e.message);
+    }, {
+      new: true,
+      runValidators: true,
     });
-};
+    if (!mentee) {
+      return res.status(404).send("No mentee Founded");
+    }
+    mentee.updateRole(mentee);
+    res.status(200).send(mentee);
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+}
 
 // delete mentor
 const removeMentee = async (req, res, next) => {
@@ -128,7 +121,7 @@ const removeMentee = async (req, res, next) => {
     if (!mentee) {
       return res.status(404).send("Selected mentee not found to delete");
     }
-    res.status(200).send(mentee);
+    res.status(200).send('delete is successfully');
   } catch (error) {
     res.status(400).send(error.messsage);
   }

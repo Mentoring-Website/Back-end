@@ -53,18 +53,15 @@ exports.mail = async (req, res, next) => {
             console.log("Reply Sent with success")
         })
 
-
         res.status(201).json({
             success: true,
             newContact,
 
         })
 
-
     } catch (error) {
         next(error);
     }
-
 }
 
 //  get the message function controller
@@ -77,5 +74,4 @@ exports.contact = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-
 }

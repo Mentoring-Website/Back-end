@@ -25,21 +25,17 @@ const requestSchema = new mongoose.Schema(
       ...mainkeys,
       trim: true,
     },
-    lookingJob: {
-      ...mainkeys,
-      enum: ["yes", "no"],
-    },
+    lookingJob: { type: Boolean, required: true, default: false },
     location: {
       ...mainkeys,
-      enum: ["Remote", "On-site"],
     },
     currency: {
       ...mainkeys,
       enum: ["USD", "EUR", "GBP", "CAD"],
+      default: "USD"
     },
     experience: {
       ...mainkeys,
-      enum: ["none", "junior", "Senior"],
     },
     status: {
       type: String,
@@ -48,16 +44,19 @@ const requestSchema = new mongoose.Schema(
     },
     duration: {
       ...mainkeys,
-      enum: ["2 months", "3 months", "open duration"],
     },
     progress:{
       type:String,
       enum:["open", "in progress", "close"],
       default:"open"
   },
-    mentee: {
+    owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+    },
+    acceptedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     reqPaid: {
       type: Number,

@@ -5,15 +5,12 @@ const auth = require("../middleware/auth")
 const upload = require('../middleware/upload')
 
 
+router.use(auth)
 
-  
-    // Define the route for mentee to upload CV
-router.post("/cv/upload",auth, upload.single("cv"), downloadController.uploadCV);
+// Define the route for mentee to upload CV
+router.post("/cv/upload", upload.single("cv"), downloadController.uploadCV);
 
 // Define the route for mentor to download CV
-router.get("/cv/download/:name", auth, downloadController.downloadcv);
-  
-  
-  
+router.get("/cv/download/:name", downloadController.downloadcv);
 
-  module.exports = router;
+module.exports = router;

@@ -6,10 +6,11 @@ const auth = require("../middleware/auth")
 
 router.use(auth)
 
-router.post('/', upload.single('avatar'), MenteeController.addNewMentee)
-router.get('/', MenteeController.getAllMentee)
-router.get('/:id', MenteeController.getMentee)
-router.patch('/:id', upload.single('avatar'), MenteeController.updateMentee)
-router.delete('/:id', MenteeController.removeMentee)
+router.post('/menteeProfile', upload.single('avatar'), MenteeController.addNewMentee)
+router.get('/menteeProfile', MenteeController.getAllMentee)
+router.get('/menteeProfile/:id', MenteeController.getMentee)
+router.patch('/menteeProfile/:id', upload.single('avatar'), MenteeController.updateMentee)
+router.delete('/menteeProfile/:id', MenteeController.removeMentee)
+
 
 module.exports = router
