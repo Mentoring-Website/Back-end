@@ -37,7 +37,6 @@ const login = async function (req, res) {
         res.status(400).send(e.message)
     }
 }
-
 const getUser = async function (req, res) {
     try {
         const user = await User.findOne({ _id: req.params.id }).populate("messages");

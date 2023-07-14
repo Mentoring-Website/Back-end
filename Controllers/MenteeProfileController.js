@@ -2,14 +2,15 @@ const Profile = require("../Models/profileModel");
 const fs = require('fs');
 
 //show the list of mentorInfo
-const getAllMentee = (req, res, next) => {  Profile.find({lookingFor: "mentor"})
-.populate({ path: "user dealtWith", select: "-tokens" })
-    .then((response) => {
-      res.json({ response });
-    })
-    .catch((e) => {
-      res.send("error Occured!", e.message);
-    });
+const getAllMentee = (req, res, next) => {
+  Profile.find({ lookingFor: "mentor" })
+  .populate({ path: "user dealtWith", select: "-tokens" })
+  .then((response) => {
+    res.json({ response });
+  })
+  .catch((e) => {
+    res.send("error Occured!", e.message);
+  });
 };
 
 //////////////////////////////////////////////////////
@@ -17,7 +18,7 @@ const getAllMentee = (req, res, next) => {  Profile.find({lookingFor: "mentor"})
 
 // add new mentor
 const addNewMentee = (req, res, next) => {
-  let avatar= req.file ? req.file.fieldname : ""
+  let avatar = req.file ? req.file.fieldname : ""
   const avatarPath = req.file ? req.file.path : "";
   let mentee = new Profile({
     lookingFor: req.body.lookingFor,
@@ -38,22 +39,21 @@ const addNewMentee = (req, res, next) => {
       res.status(200).send(response);
     })
     .catch((error) => {
-      
+
       res.status(400).send(error.message);
-      if(avatar){
+      if (avatar) {
         deleteUploadedAvatar(avatarPath)
       }
-      
+
     });
 };
-
 
 ///////////////////////////////////////////////
 //////Delete avatar in case the profile failed of saving
 
 function deleteUploadedAvatar(avatarPath) {
   // avatarPath
-  const filePath =avatarPath ; // Specify the correct path to the avatar file
+  const filePath = avatarPath; // Specify the correct path to the avatar file
 
   if (!fs.existsSync(filePath)) {
     console.error('Avatar file does not exist');
@@ -76,7 +76,7 @@ function deleteUploadedAvatar(avatarPath) {
 const getMentee = async (req, res, next) => {
   const _id = req.params.id;
   Profile.findById(_id)
-  .populate({ path: "user dealtWith", select: "-tokens" })
+    .populate({ path: "user dealtWith", select: "-tokens" })
     .then((mentee) => {
       if (!mentee) {
         return res.status(404).send("mentee not found");

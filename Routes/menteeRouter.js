@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const upload = require('../middleware/upload')
-const MenteeController = require('../Controllers/menteeProfileController')
+const MenteeController = require('../Controllers/MenteeProfileController')
 const auth = require("../middleware/auth")
 
 router.use(auth)

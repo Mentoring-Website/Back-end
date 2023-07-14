@@ -1,23 +1,60 @@
 const Profile = require("../Models/profileModel");
+const fs = require('fs');
 
-const PostMentor = async (req, res) => {
-  try {
-    const mentor = new Profile({ ...req.body });
+const PostMentor =  (req, res) => {
+    let avatar = req.file ? req.file.fieldname : ""
+    const avatarPath = req.file ? req.file.path : "";
+    let mentor = new Profile({
+      lookingFor: req.body.lookingFor,
+      designation: req.body.designation,
+      location: req.body.location,
+      yearsOfExperence: req.body.yearsOfExperence,
+      avatar: avatar,
+      expertise: req.body.expertise,
+      currentCompany: req.body.currentCompany,
+      user: req.user._id,
+    });
+
     mentor.user = req.user._id;
     mentor.updateRole(mentor);
-    await mentor.save();
-    res.status(200).send(mentor);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
+
+    mentor
+      .save()
+      .then((response) => {
+        res.status(200).send(response);
+      })
+      .catch((error) => {
+        res.status(400).send(error.message);
+        if (avatar) {
+          deleteUploadedAvatar(avatarPath)
+        }
+      });
 };
 
 ////////////////////////////////////////////////////////////////////////////////////
+function deleteUploadedAvatar(avatarPath) {
+  // avatarPath
+  const filePath = avatarPath; // Specify the correct path to the avatar file
+
+  if (!fs.existsSync(filePath)) {
+    console.error('Avatar file does not exist');
+    return;
+  }
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error(`Error deleting avatar: ${err}`);
+    } else {
+      console.log('Avatar deleted successfully');
+    }
+  });
+}
+
 // Get
 
 const GetMentors = async (req, res) => {
   try {
-    const mentor = await Profile.find({lookingFor: "mentee"}).populate({
+    const mentor = await Profile.find({ lookingFor: "mentee" }).populate({
       path: "user dealtWith",
       select: "-tokens",
     });
@@ -52,7 +89,13 @@ const getById = async (req, res) => {
 const PatchMentor = async (req, res) => {
   try {
     const _id = req.params.id;
-    const mentor = await Profile.findByIdAndUpdate(_id, req.body, {
+    const mentor = await Profile.findByIdAndUpdate(_id, {
+      lockingFor: req.body.lockingFor,
+      designation: req.body.designation,
+      location: req.body.location,
+      avatar: req.file ? req.file.filename : "",
+
+    }, {
       new: true,
       runValidators: true,
     });
