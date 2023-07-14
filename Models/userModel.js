@@ -68,6 +68,7 @@ userSchema.virtual("messages", {
 })
 
 
+
 userSchema.pre("save", async function () {
   if (this.isModified("password")) {
     const salt = await bcryptjs.genSalt(8);
