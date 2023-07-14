@@ -27,7 +27,7 @@ const register = async function (req, res) {
 const login = async function (req, res) {
     try {
         if (!req.body.email || !req.body.password) {
-          throw new Error("email and password are required");
+            throw new Error("email and password are required");
         }
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateToken()
@@ -40,32 +40,32 @@ const login = async function (req, res) {
 
 const getUser = async function (req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.id }).populate("messages");
-      res.status(200).json(user);
+        const user = await User.findOne({ _id: req.params.id }).populate("messages");
+        res.status(200).json(user);
     } catch (e) {
-      res.status(400).send(e.message)
+        res.status(400).send(e.message)
     }
 };
 
-const logout = async function(req, res){
+const logout = async function (req, res) {
     console.log(req.headers["authorization"].split(" ")[1])
-    try{
-        req.user.tokens = req.user.tokens.filter(el=>{
+    try {
+        req.user.tokens = req.user.tokens.filter(el => {
             return el !== req.headers["authorization"].split(" ")[1]
         })
         await req.user.save()
         res.status(200).send('successfully logged out')
-    }catch(e){
+    } catch (e) {
         res.status(500).send(e.message)
     }
 }
 
-const logoutAll = async function(req, res) {
-    try{
+const logoutAll = async function (req, res) {
+    try {
         req.user.tokens = []
         await req.user.save()
         res.status(200).send('successfully logged out from all devices')
-    }catch(e){
+    } catch (e) {
         res.status(500).send(e.message)
     }
 }

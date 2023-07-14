@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,    
+    required: true,
     unique: true,
     lowercase: true,
     validate(val) {
@@ -104,7 +104,7 @@ userSchema.methods.sendEmail = function sendEmail(email, title, text) {
     subject: title || "mentors project",
     html: text || "Hello, from your mentors project",
   };
-  
+
   transporter.sendMail(mailOptions, function (err, res) {
     if (err) {
       throw new Error(err);

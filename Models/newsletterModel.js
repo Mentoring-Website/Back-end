@@ -27,6 +27,7 @@ newsletterSchema.methods.transport = function (email, title, text) {
       rejectUnauthorized: false,
     },
   });
+  
   let mailOptions = {
     from: process.env.MAIL_EMAIL,
     to: email || "example@gmail.com",
@@ -42,5 +43,4 @@ newsletterSchema.methods.transport = function (email, title, text) {
 }
 
 const Newsletter = mongoose.model("Newsletter", newsletterSchema);
-
 module.exports = Newsletter;

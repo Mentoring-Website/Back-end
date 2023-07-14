@@ -11,7 +11,6 @@ router.post("/login", login);
 router.post("/logout", auth, logout);
 router.post("/logout-all", auth, logoutAll);
 
-
 router.get("/user/:id", auth, getUser);
 // router.use("/cv", auth, cvRoutes); 
 

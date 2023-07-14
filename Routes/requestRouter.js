@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const homeController = require("../Controllers/mentorRequestController");
-const auth=require("../middleware/auth")
-const {authReq} = require("../middleware/reqAndOpp")
+const auth = require("../middleware/auth")
+const { authReq } = require("../middleware/reqAndOpp")
 const asyncHandler = require('express-async-handler');
-
 
 router.post("/", auth, authReq, asyncHandler(homeController.postRequests));
 router.get("/", auth, asyncHandler(homeController.getRequests));
