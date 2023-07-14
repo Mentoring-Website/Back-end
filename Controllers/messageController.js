@@ -30,7 +30,7 @@ const getMessageById = async (req, res) => {
   const _id = req.params.id;
   Message.findById(_id).populate("receiver")
     .sort({ _id: -1 }).limit(100)
-    .populate("sender")
+    .populate({path: "sender", select: "-tokens",})
     .then((message) => {
       if (!message) {
         return res.status(404).send("message not found");
@@ -48,7 +48,7 @@ const getReceiverMessages = async (req, res) => {
 
     const messages = await Message.find({ receiver: _id })
       .sort({ _id: -1 }).limit(100)
-      .populate("receiver").populate("sender")
+      .populate({path: "receiver sender", select: "-tokens",})
     res.status(200).json(messages);
   } catch (e) {
     res.status(500).send("Failed to retrieve messages", e.message);
@@ -62,7 +62,7 @@ const getSenderMessages = async (req, res) => {
 
     const messages = await Message.find({ sender: _id })
       .sort({ _id: -1 }).limit(100)
-      .populate("receiver").populate("sender")
+      .populate({path: "receiver sender", select: "-tokens",})
     res.status(200).json(messages);
   } catch (e) {
     res.status(500).send("Failed to retrieve messages", e.message);
@@ -77,7 +77,7 @@ const searchMessages = async (req, res) => {
 
     const messages = await Message.find({ $text: { $search: searchFor } })
       .sort({ 'score': { '$meta': 'textScore' } }).limit(25)
-      .populate("receiver").populate("sender")
+      .populate({path: "receiver sender", select: "-tokens",})
 
     res.status(200).json(messages);
   } catch (e) {
@@ -92,7 +92,7 @@ const searchMessagesByDate = async (req, res) => {
 
     const messages = await Message.find({ $text: { $search: searchFor } })
       .sort({ _id: -1 }).limit(25)
-      .populate("receiver").populate("sender")
+      .populate({path: "receiver sender", select: "-tokens",})
 
     res.status(200).json(messages);
   } catch (e) {

@@ -45,20 +45,20 @@ const updateOpportunity = async (req, res) => {
 
 const createOpportunity = async (req, res) => {
     try {
-        const { startTime, endTime } = req.body;
-        const existingOpportunity = await OpportunityModel.findOne({
-            $or: [
-                { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
-                { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
-                { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
-            ],
-        });
+        // const { startTime, endTime } = req.body;
+        // const existingOpportunity = await OpportunityModel.findOne({
+        //     $or: [
+        //         { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
+        //         { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
+        //         { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
+        //     ],
+        // });
 
-        if (existingOpportunity) {
-            return res
-                .status(400)
-                .json({ error: "Cannot add opportunity in the same time duration" });
-        }
+        // if (existingOpportunity) {
+        //     return res
+        //         .status(400)
+        //         .json({ error: "Cannot add opportunity in the same time duration" });
+        // }
 
         const opportunity = await OpportunityModel.create({
             ...req.body,

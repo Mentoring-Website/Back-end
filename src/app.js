@@ -17,7 +17,8 @@ const commentRouter = require("../Routes/commentsRouter");
 const requestRounter = require("../Routes/requestRouter")
 const socialLoginRouter = require("../Routes/SocialAuthRouter");
 const newsletterRouter = require('../Routes/newsletterRouter')
-const passwordRouter = require('../Routes/PasswordRouter')
+const passwordRouter = require('../Routes/passwordRouter')
+const acceptingRouter = require('../Routes/acceptingRouter');
 const { logger } = require('../middleware/reglogger')
 const errorHandle = require('../middleware/errorLogger')
 const corsOptions = require('../config/corsOptions')
@@ -32,11 +33,12 @@ app.use(logger)
 app.use(errorHandle);
 app.use('/api/v1', passwordRouter)
 app.use('/api/v1', newsletterRouter)
+app.use('/api/auth', userRouter)
 app.use(passport.initialize());
 app.use('/api/v1', mentorRouter)
+app.use('/api/auth', acceptingRouter)
 app.use('/api/opp', opportunityRouter);
 app.use('/api/req', requestRounter);
-app.use('/api/auth', userRouter)
 app.use('/api/email', mailRouter)
 app.use('/api/v1', menteeRouter);
 app.use('/api/v1', messageRouter);

@@ -11,7 +11,6 @@ const opportunitySchema = mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Description required'],
-        lowercase: true,
     },
     certificate: {
         type: String,
@@ -77,26 +76,34 @@ const opportunitySchema = mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
-    }
+    },
+    progress: {
+      type: String, default: "open",
+      enum: ["open", "in progress", "close"],
+    },
+    acceptedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
 },
     //to create tow document in database with category
     { timestamp: true }
 );
 // Before saving we add status of opportunity to the req
 opportunitySchema.pre('save', function (next) {
-    const currentDate = new Date();
+    // const currentDate = new Date();
   
-    if (currentDate > this.startDate && currentDate <= this.endDate) {
-      this.progress = 'in progress';
-    } else if (currentDate > this.endDate) {
-      this.progress = 'closed';
+    // if (currentDate > this.startDate && currentDate <= this.endDate) {
+    //   this.progress = 'in progress';
+    // } else if (currentDate > this.endDate) {
+    //   this.progress = 'closed';
       
-    } else {
-      this.progress = 'open';
-    }
+    // } else {
+    //   this.progress = 'open';
+    // }
   
     next();
   });
 // create model
-const OpportunityModel = mongoose.model('opportunity', opportunitySchema);
-module.exports = OpportunityModel;
+const Opportunity = mongoose.model('opportunity', opportunitySchema);
+module.exports = { Opportunity };

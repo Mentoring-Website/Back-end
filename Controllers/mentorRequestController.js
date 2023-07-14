@@ -47,7 +47,7 @@ const getRequestsByID = (req, res) => {
 const patchRequets = async (req, res) => {
   try {
     const _id = req.params.id;
-    const request = await Request.findByIdAndUpdate({ _id, mentee: req.user._id }, req.body, {
+    const request = await Request.findByIdAndUpdate(_id, req.body, {
       new: true,
       runValidators: true,
     });
