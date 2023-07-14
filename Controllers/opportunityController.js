@@ -1,5 +1,4 @@
 const OpportunityModel = require('../Models/opportunityModel');
-const { deleteAvatarFile } = require('../middleware/upload');
 
 const getAllOpportunities = async (req, res) => {
     try {
@@ -7,7 +6,7 @@ const getAllOpportunities = async (req, res) => {
         const limit = req.query.limit * 1 || 5;
         const skip = (page - 1) * limit;
 
-        const allOpportunity = await OpportunityModel.find({ owner: req.user._id }).skip(skip).limit(limit);
+        const allOpportunity = await OpportunityModel.find().skip(skip).limit(limit);
         res.status(200).json({ results: allOpportunity.length, page, data: allOpportunity });
     } catch (error) {
         res.status(500).json(error.message);
@@ -17,7 +16,7 @@ const getAllOpportunities = async (req, res) => {
 const getOpportunityById = async (req, res) => {
     try {
         const _id = req.params.id;
-        const opportunity = await OpportunityModel.findOne({ _id, owner: req.user._id });
+        const opportunity = await OpportunityModel.findById(_id);
         if (!opportunity) {
             return res.status(404).send({ msg: ` No opportunity for this id ${_id}` });
         }
@@ -31,7 +30,7 @@ const updateOpportunity = async (req, res) => {
     try {
         const _id = req.params.id;
         const opportunity = await OpportunityModel.findOneAndUpdate(
-            { _id, owner: req.user._id },
+            _id,
             req.body,
             { new: true, runValidators: true }
         );
@@ -75,12 +74,10 @@ const createOpportunity = async (req, res) => {
 const deleteOpportunity = async (req, res) => {
     try {
         const _id = req.params.id;
-        const opportunity = await OpportunityModel.findOneAndDelete({ _id, owner: req.user._id });
+        const opportunity = await OpportunityModel.findOneAndDelete(_id);
         if (!opportunity) {
             return res.status(404).json({ msg: ` No opportunity for this id ${_id}` });
         }
-
-        deleteAvatarFile(user.avatar);
         res.status(204).send('deleted');
     } catch (error) {
         res.status(500).json({ error: error.message });

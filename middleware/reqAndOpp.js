@@ -1,4 +1,3 @@
-const Profile = require("../Models/profileModel");
 
 require("dotenv").config();
 

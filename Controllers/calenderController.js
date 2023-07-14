@@ -10,7 +10,7 @@ exports.getMentorCalendar = (req, res) => {
   const monthName = today.toLocaleString("default", { month: "long" });
 
   const unavailableDays = opportunitys.duration;
-
+  
   const calendarData = {
     year,
     month,
@@ -21,6 +21,7 @@ exports.getMentorCalendar = (req, res) => {
 
   res.statuse(200).send(calendarData);
 };
+
 exports.getMenteeCalendar = (req, res) => {
   const opportunity = request.find({ mentee: req.user._id });
   const today = new Date();
