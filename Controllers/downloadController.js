@@ -25,8 +25,6 @@ const uploadCV = async (req, res) => {
 };
 
 
-
-
 //////////////////////////////////////////////////////////////
 // Controller function to handle CV download
 const downloadcv = async (req, res) => {
@@ -53,7 +51,6 @@ const downloadcv = async (req, res) => {
 };
 
 module.exports = {
- 
   uploadCV,
   downloadcv,
 };

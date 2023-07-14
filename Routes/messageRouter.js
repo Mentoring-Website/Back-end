@@ -3,14 +3,17 @@ const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 
-router.get("/receiver/:id", auth, messageController.getReceiverMessages);
-router.get("/sender/:id", auth, messageController.getSenderMessages);
+// add authentication
+router.use(auth)
+
+router.get("/message/receiver/:id", messageController.getReceiverMessages);
+router.get("/message/sender/:id", messageController.getSenderMessages);
 
 // /search for most relavent, /searchNewest for search by newest
-router.get("/search", auth, messageController.searchMessages);
-router.get("/searchNewest", auth, messageController.searchMessagesByDate);
+router.get("/message/search", messageController.searchMessages);
+router.get("/message/searchNewest", messageController.searchMessagesByDate);
 
-router.post("/:id", auth, messageController.createMessage);
-router.get("/:id", auth, messageController.getMessageById);
+router.post("/message/:id", messageController.createMessage);
+router.get("/message/:id", messageController.getMessageById);
 
 module.exports = router;

@@ -4,10 +4,10 @@ const auth = require("../middleware/auth")
 const { authReq } = require("../middleware/reqAndOpp")
 const asyncHandler = require('express-async-handler');
 
-router.post("/", auth, authReq, asyncHandler(homeController.postRequests));
-router.get("/", auth, asyncHandler(homeController.getRequests));
-router.get("/:id", auth, authReq, asyncHandler(homeController.getRequestsByID));
-router.patch("/:id", auth, authReq, asyncHandler(homeController.patchRequets));
-router.delete("/:id", auth, authReq, asyncHandler(homeController.deleteRequests))
+router.post("/request", auth, authReq, asyncHandler(homeController.postRequests));
+router.get("/request", auth, asyncHandler(homeController.getRequests));
+router.get("/request/:id", auth, authReq, asyncHandler(homeController.getRequestsByID));
+router.patch("/request/:id", auth, authReq, asyncHandler(homeController.patchRequets));
+router.delete("/request/:id", auth, authReq, asyncHandler(homeController.deleteRequests))
 
 module.exports = router;
