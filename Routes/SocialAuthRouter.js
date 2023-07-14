@@ -5,13 +5,13 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const CLIENT_URL = "http://localhost:3000/";
-router.get("/google",
+router.get("/auth/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
 );
 
-router.get("/google/callback",
+router.get("/auth/google/callback",
   passport.authenticate("google",
     { failureRedirect: "/login" },
     (req, res) => {
@@ -20,9 +20,9 @@ router.get("/google/callback",
     }
   ));
 
-router.get("/github", passport.authenticate("linkedin"));
+router.get("/auth/github", passport.authenticate("linkedin"));
 
-router.get("/github/callback",
+router.get("/auth/github/callback",
   passport.authenticate("github",
     { failureRedirect: "/login" },
     (req, res) => {
@@ -31,10 +31,10 @@ router.get("/github/callback",
     }
   ));
 
-router.get("/facebook", passport.authenticate("facebook"));
+router.get("/auth/facebook", passport.authenticate("facebook"));
 
 router.get(
-  "/facebook/callback",
+  "/auth/facebook/callback",
   passport.authenticate("facebook",
     { failureRedirect: "/login" },
     (req, res) => {

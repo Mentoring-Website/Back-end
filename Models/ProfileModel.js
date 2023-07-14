@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./userModel");
 
-const ProfileSchema = new mongoose.Schema(
+const profileSchema = new mongoose.Schema(
   {
     lookingFor: {
       type: String,
@@ -46,11 +46,17 @@ const ProfileSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
+    dealtWith: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }
+  ]
   },
   { timestamps: true }
 );
 
-ProfileSchema.methods.updateRole = async function (mentor) {
+profileSchema.methods.updateRole = async function (mentor) {
   try {
     await User.findByIdAndUpdate(
       mentor.user,
@@ -65,6 +71,6 @@ ProfileSchema.methods.updateRole = async function (mentor) {
   }
 }
 
-const Profile = mongoose.model("Profile", ProfileSchema);
+const Profile = mongoose.model("Profile", profileSchema);
 
 module.exports = Profile;

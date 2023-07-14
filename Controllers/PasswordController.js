@@ -16,7 +16,7 @@ const forgetPassword = async function (req, res) {
     // Generate secret
     const secret = process.env.SECRET_KEY + user.password
     const token = jwt.sign({ email: user.email, id: user.id }, secret, { expiresIn: '30m' })
-    const link = `Localhost${process.env.PORT || 5000}/resetpassword/${user.id}/${token}`
+    const link = `Localhost${process.env.PORT || 5000}/password/${user.id}/${token}`
     console.log(link) //REMOVE THIS LINE ON PRODUCTION
     user.sendEmail(user.email, 'Reset Password / Mentor Project', `<h1>Password reset request</h1><h3>You requested a password reset for your account.</h3><b>Click <a href="${link}">here</a> to reset your password.</b><br><br><p>please ignore if you didn't sent us this request</p>`)
     res.status(200).send("The password reset link has been sent to your email")

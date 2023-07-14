@@ -1,5 +1,5 @@
 const opportunitys = require("../Models/opportunityModel");
-const request = require("../Models/mentorRequestModel");
+const request = require("../Models/requestModel");
 
 exports.getMentorCalendar = (req, res) => {
   const opportunity = opportunitys.find({ owner: req.user._id });

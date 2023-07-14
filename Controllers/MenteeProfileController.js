@@ -2,8 +2,8 @@ const Profile = require("../Models/profileModel");
 
 //show the list of mentorInfo
 const getAllMentee = (req, res, next) => {
-  Profile.find()
-    .populate({ path: "user", select: "-tokens" })
+  Profile.find({lookingFor: "mentor"})
+    .populate({ path: "user dealtWith", select: "-tokens" })
     .then((response) => {
       res.json({ response });
     })
@@ -41,7 +41,7 @@ const addNewMentee = (req, res, next) => {
 const getMentee = async (req, res, next) => {
   const _id = req.params.id;
   Profile.findById(_id)
-    .populate({ path: "user", select: "-tokens" })
+    .populate({ path: "user dealtWith", select: "-tokens" })
     .then((mentee) => {
       if (!mentee) {
         return res.status(404).send("mentee not found");

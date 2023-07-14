@@ -11,7 +11,6 @@ const opportunitySchema = mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Description required'],
-        lowercase: true,
     },
     certificate: {
         type: String,
@@ -29,37 +28,24 @@ const opportunitySchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    paid: {
-        type: Boolean,
-        default: false
-    },
+    paid: { type: Boolean, default: false, },
     amount: {
-        type: Number,
-        required: [true, 'Amount required']
+      type: Number, required: true,
+      validate(val) {
+        if (val < 0) throw new Error("Price must be a non-negative number");
+      },
     },
-    currency: {
-        type: String,
-        default: 'USD'
-    },
-    respons: {
-        type: String,
-        default: ""
-    },
-    requires: {
-        type: String,
-        default: ""
-    },
-    expOutcome: {
-        type: String,
-        default: ""
-    },
-    startDate: {
-        type: Date,
-        required: true,
+    currency: { type: String, required: true, default: "USD", },
+    respons: [{ type: String, }],
+    requirements: [{ type: String, }],
+    expOutcome: [{ type: String, }],
+    startDate: { 
+        type: Date, required: true,
+        required: [true, "Start date is required (yyyy-MM-dd)"],
     },
     endDate: {
-        type: Date,
-        required: true,
+        type: Date, required: true,
+        required: [true, "End date is required (yyyy-MM-dd)"],
     },
     daysInWeek: {
         type: [String],
@@ -77,26 +63,34 @@ const opportunitySchema = mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
-    }
+    },
+    progress: {
+      type: String, default: "open",
+      enum: ["open", "in progress", "close"],
+    },
+    acceptedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
 },
-    //to create tow document in database with category
     { timestamp: true }
 );
 // Before saving we add status of opportunity to the req
 opportunitySchema.pre('save', function (next) {
-    const currentDate = new Date();
+    // const currentDate = new Date //.now();
+    // console.log(`start: ${this.startDate} , end:  ${this.endDate}, current:  ${currentDate}`)
   
-    if (currentDate > this.startDate && currentDate <= this.endDate) {
-      this.progress = 'in progress';
-    } else if (currentDate > this.endDate) {
-      this.progress = 'closed';
+    // if (currentDate >= this.startDate && currentDate <= this.endDate) {
+    //   this.progress = 'in progress';
+    // } else if (currentDate > this.endDate) {
+    //   this.progress = 'closed';
       
-    } else {
-      this.progress = 'open';
-    }
+    // } else {
+    //   this.progress = 'open';
+    // }
   
     next();
   });
 // create model
-const OpportunityModel = mongoose.model('opportunity', opportunitySchema);
-module.exports = OpportunityModel;
+const Opportunity = mongoose.model('opportunity', opportunitySchema);
+module.exports = { Opportunity };

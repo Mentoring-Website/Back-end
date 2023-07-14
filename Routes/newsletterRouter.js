@@ -3,6 +3,6 @@ const subscribeToNewsletter = require('../Controllers/newsletterController');
 
 const router = express.Router()
 
-router.post('/', subscribeToNewsletter)
+router.post('/subscribe', subscribeToNewsletter)
 
 module.exports = router;

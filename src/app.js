@@ -10,6 +10,7 @@ require('../config/dbConnection')
 const mentorRouter = require('../Routes/mentorRouter')
 const userRouter = require('../Routes/userRouter')
 const opportunityRouter = require('../Routes/opportunityRouter');
+const acceptingRouter = require('../Routes/acceptingRouter');
 const mailRouter = require("../Routes/mailRouter")
 const menteeRouter = require("../Routes/menteeRouter");
 const messageRouter = require("../Routes/messageRouter");
@@ -30,18 +31,19 @@ app.use(express.json())
 app.use(cors(corsOptions))
 app.use(logger)
 app.use(errorHandle);
-app.use('/password', passwordRouter)
-app.use('/subscribe', newsletterRouter)
-app.use(passport.initialize());
-app.use('/mentor', mentorRouter)
-app.use('/opp', opportunityRouter);
-app.use('/requests', requestRounter);
+app.use(passwordRouter)
+app.use(newsletterRouter)
 app.use(userRouter)
+app.use(passport.initialize());
+app.use(mentorRouter)
+app.use(menteeRouter);
+app.use(opportunityRouter);
+app.use(requestRounter);
+app.use(acceptingRouter)
 app.use(mailRouter)
-app.use('/mentee', menteeRouter);
-app.use('/messages', messageRouter);
-app.use('/auth', socialLoginRouter);
-app.use('/comments', commentRouter);
+app.use(messageRouter);
+app.use(socialLoginRouter);
+app.use(commentRouter);
 app.use(calendar)
 app.use("/uploads", express.static("uploads"));
 app.use(download)

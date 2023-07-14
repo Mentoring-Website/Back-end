@@ -30,11 +30,13 @@ const getOpportunityById = async (req, res) => {
 const updateOpportunity = async (req, res) => {
     try {
         const _id = req.params.id;
-        const opportunity = await OpportunityModel.findOneAndUpdate(
+        const opportunity = await OpportunityModel.findOne(
             { _id, owner: req.user._id },
             req.body,
             { new: true, runValidators: true }
         );
+        if(req.body.startTime || req.body.endTime)
+            opportunity.duration = opportunity.aggregate()
         if (!opportunity) {
             return res.status(404).send({ msg: ` No opportunity for this id ${_id}` });
         }
@@ -46,20 +48,20 @@ const updateOpportunity = async (req, res) => {
 
 const createOpportunity = async (req, res) => {
     try {
-        const { startTime, endTime } = req.body;
-        const existingOpportunity = await OpportunityModel.findOne({
-            $or: [
-                { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
-                { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
-                { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
-            ],
-        });
+        // const { startTime, endTime } = req.body;
+        // const existingOpportunity = await OpportunityModel.findOne({
+        //     $or: [
+        //         { startTime: { $lte: startTime }, endTime: { $gte: startTime } },
+        //         { startTime: { $lte: endTime }, endTime: { $gte: endTime } },
+        //         { startTime: { $gte: startTime }, endTime: { $lte: endTime } },
+        //     ],
+        // });
 
-        if (existingOpportunity) {
-            return res
-                .status(400)
-                .json({ error: "Cannot add opportunity in the same time duration" });
-        }
+        // if (existingOpportunity) {
+        //     return res
+        //         .status(400)
+        //         .json({ error: "Cannot add opportunity in the same time duration" });
+        // }
 
         const opportunity = await OpportunityModel.create({
             ...req.body,
