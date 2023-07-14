@@ -1,4 +1,4 @@
-const { Request } = require("../Models/requestModel");
+const { Request } = require("../Models/mentorRequestModel");
 const { Opportunity } = require("../Models/opportunityModel");
 const Profile = require("../Models/profileModel");
 
@@ -7,6 +7,7 @@ const acceptRequest = async (req, res) => {
     const id = req.params.id;
     const request = await Request.findById(id)
       .populate("owner acceptedBy")
+
     if (!request) return res.status(404).send("Unable to find request");
     if (request.progress === "in progress")
       return res.status(400).send("This request is already in progress");
