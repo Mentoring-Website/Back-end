@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const downloadController = require('../Controllers/downloadController')
 const auth = require("../middleware/auth")
 const upload = require('../middleware/upload')
-const path = require('path')
+
 
 
   
