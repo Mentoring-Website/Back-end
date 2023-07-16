@@ -30,7 +30,7 @@ exports.getMenteeCalendar = (req, res) => {
   const daysInMonth = new Date(year, month, 0).getDate();
   const monthName = today.toLocaleString("default", { month: "long" });
 
-  const unavailableDays = request.duration;
+  const unavailableDays = request.duration
 
   const calendarData = {
     year,
