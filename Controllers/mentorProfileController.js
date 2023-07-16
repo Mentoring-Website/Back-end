@@ -18,10 +18,8 @@ const PostMentor =  (req, res) => {
         res.status(200).send(response);
       })
       .catch((error) => {
+        if (avatar) deleteUploadedAvatar(avatarPath)
         res.status(400).send(error.message);
-        if (avatar) {
-          deleteUploadedAvatar(avatarPath)
-        }
       });
 };
 
