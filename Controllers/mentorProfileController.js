@@ -1,34 +1,34 @@
 const Profile = require("../Models/profileModel");
 const fs = require('fs');
 
-const PostMentor =  (req, res) => {
-    let avatar = req.file ? req.file.fieldname : ""
-    const avatarPath = req.file ? req.file.path : "";
-    let mentor = new Profile({
-      lookingFor: req.body.lookingFor,
-      designation: req.body.designation,
-      location: req.body.location,
-      yearsOfExperence: req.body.yearsOfExperence,
-      avatar: avatar,
-      expertise: req.body.expertise,
-      currentCompany: req.body.currentCompany,
-      user: req.user._id,
+const PostMentor = (req, res) => {
+  let avatar = req.file ? req.file.fieldname : ""
+  const avatarPath = req.file ? req.file.path : "";
+  let mentor = new Profile({
+    lookingFor: req.body.lookingFor,
+    designation: req.body.designation,
+    location: req.body.location,
+    yearsOfExperence: req.body.yearsOfExperence,
+    avatar: avatar,
+    expertise: req.body.expertise,
+    currentCompany: req.body.currentCompany,
+    user: req.user._id,
+  });
+
+  mentor.user = req.user._id;
+  mentor.updateRole(mentor);
+
+  mentor
+    .save()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(400).send(error.message);
+      if (avatar) {
+        deleteUploadedAvatar(avatarPath)
+      }
     });
-
-    mentor.user = req.user._id;
-    mentor.updateRole(mentor);
-
-    mentor
-      .save()
-      .then((response) => {
-        res.status(200).send(response);
-      })
-      .catch((error) => {
-        res.status(400).send(error.message);
-        if (avatar) {
-          deleteUploadedAvatar(avatarPath)
-        }
-      });
 };
 
 ////////////////////////////////////////////////////////////////////////////////////

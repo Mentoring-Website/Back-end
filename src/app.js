@@ -7,6 +7,9 @@ require("dotenv").config()
 const passport = require("passport");
 require('../config/dbConnection')
 
+
+// libraries
+
 const mentorRouter = require('../Routes/mentorRouter')
 const userRouter = require('../Routes/userRouter')
 const opportunityRouter = require('../Routes/opportunityRouter');
@@ -26,6 +29,8 @@ const calendar = require("../Routes/calenderRouter")
 const download = require('../Routes/downloadRouter')
 
 const port = process.env.PORT || 5000
+
+// use
 
 app.use(express.json())
 app.use(cors(corsOptions))

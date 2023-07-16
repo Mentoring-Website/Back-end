@@ -4,10 +4,12 @@ const auth = require("../middleware/auth")
 const { isMentee } = require("../middleware/reqAndOpp")
 const asyncHandler = require('express-async-handler');
 
-router.post("/request", auth, isMentee, asyncHandler(homeController.postRequests));
-router.get("/request", auth, asyncHandler(homeController.getRequests));
-router.get("/request/:id", auth, isMentee, asyncHandler(homeController.getRequestsByID));
-router.patch("/request/:id", auth, isMentee, asyncHandler(homeController.patchRequets));
-router.delete("/request/:id", auth, isMentee, asyncHandler(homeController.deleteRequests))
+router.use(auth)
+
+router.post("/request", isMentee, asyncHandler(homeController.postRequests));
+router.get("/request", asyncHandler(homeController.getRequests));
+router.get("/request/:id", isMentee, asyncHandler(homeController.getRequestsByID));
+router.patch("/request/:id", isMentee, asyncHandler(homeController.patchRequets));
+router.delete("/request/:id", isMentee, asyncHandler(homeController.deleteRequests))
 
 module.exports = router;

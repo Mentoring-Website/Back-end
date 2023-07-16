@@ -1,16 +1,16 @@
-const opportunitys = require("../Models/opportunityModel");
-const request = require("../Models/mentorRequestModel");
+const Opportunitys = require("../Models/opportunityModel");
+const Request = require("../Models/mentorRequestModel");
 
 exports.getMentorCalendar = (req, res) => {
-  const opportunity = opportunitys.find({ owner: req.user._id });
+  const opportunity = Opportunitys.find({ owner: req.user._id });
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const daysInMonth = new Date(year, month, 0).getDate();
   const monthName = today.toLocaleString("default", { month: "long" });
 
-  const unavailableDays = opportunitys.duration;
-  
+  const unavailableDays = Opportunitys.duration;
+
   const calendarData = {
     year,
     month,
@@ -23,14 +23,14 @@ exports.getMentorCalendar = (req, res) => {
 };
 
 exports.getMenteeCalendar = (req, res) => {
-  const opportunity = request.find({ mentee: req.user._id });
+  const opportunity = Request.find({ mentee: req.user._id });
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const daysInMonth = new Date(year, month, 0).getDate();
   const monthName = today.toLocaleString("default", { month: "long" });
 
-  const unavailableDays = request.duration;
+  const unavailableDays = Request.duration;
 
   const calendarData = {
     year,

@@ -4,17 +4,16 @@ const fs = require('fs');
 //show the list of mentorInfo
 const getAllMentee = (req, res, next) => {
   Profile.find({ lookingFor: "mentor" })
-  .populate({ path: "user dealtWith", select: "-tokens" })
-  .then((response) => {
-    res.json({ response });
-  })
-  .catch((e) => {
-    res.send("error Occured!", e.message);
-  });
+    .populate({ path: "user dealtWith", select: "-tokens" })
+    .then((response) => {
+      res.json({ response });
+    })
+    .catch((e) => {
+      res.send("error Occured!", e.message);
+    });
 };
 
 //////////////////////////////////////////////////////
-
 
 // add new mentor
 const addNewMentee = (req, res, next) => {
@@ -68,7 +67,6 @@ function deleteUploadedAvatar(avatarPath) {
     }
   });
 }
-
 
 ////////////////////////////////////////
 

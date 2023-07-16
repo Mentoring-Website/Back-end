@@ -45,11 +45,11 @@ const requestSchema = new mongoose.Schema(
     duration: {
       ...mainkeys,
     },
-    progress:{
-      type:String,
-      enum:["open", "in progress", "close"],
-      default:"open"
-  },
+    progress: {
+      type: String,
+      enum: ["open", "in progress", "close"],
+      default: "open"
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

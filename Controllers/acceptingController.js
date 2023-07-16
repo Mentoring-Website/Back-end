@@ -15,6 +15,7 @@ const acceptRequest = async (req, res) => {
       return res.status(400).send("This request is already closed");
     const mentor = await Profile.findOne({ user: req.user.id });
     const mentee = await Profile.findOne({ user: request.owner });
+    
     // console.log("mentor", mentor,"mentee", mentee)
     if (!mentor || !mentee) return res.status(400).send("no user found");
     mentor.dealtWith = mentor.dealtWith.concat(req.user.id);

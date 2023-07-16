@@ -21,7 +21,7 @@ passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (profile, done) {
       try {
         const existingUser = await User.findOne({ googleId: profile.id });
         if (existingUser) {
@@ -52,7 +52,7 @@ passport.use(
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL: "/auth/linkedin/callback",
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (profile, done) {
       try {
         const existingUse = await User.findOne({ gitId: profile.id });
         if (existingUse) {
@@ -84,7 +84,7 @@ passport.use(
       callbackURL: "/auth/facebook/callback",
       profileFields: ["id", "displayName", "emails", "picture.type(large)"],
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (profile, done) {
       try {
         const existingUser = await User.findOne({ facebookId: profile.id });
         if (existingUser) {
