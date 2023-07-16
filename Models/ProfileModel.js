@@ -6,7 +6,6 @@ const ProfileSchema = new mongoose.Schema(
     lookingFor: {
       type: String,
       enum: ["mentee", "mentor"],
-      default: "mentor",
       required: true,
     },
     designation: {
@@ -29,9 +28,11 @@ const ProfileSchema = new mongoose.Schema(
     yearsOfExperence: {
       type: Number,
     },
-    expertise: {
-      type: String,
-    },
+    expertise: [{
+      name: {type: String, trim: true},
+      from: {type: Number, max: 2024, min: 1900},
+      to: {type: Number, max: 2024, min: 1900},
+    }],
     currentCompany: {
       type: String,
       trim: true,
@@ -46,12 +47,13 @@ const ProfileSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    dealtWith: [
-      {
+    dealtWith: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-      }
-    ]
+    }],
+    busyDays: [{
+      from: {type: Date}, to: {type: Date}
+    }]
   },
   { timestamps: true }
 );
@@ -66,7 +68,7 @@ ProfileSchema.methods.updateRole = async function (mentor) {
       { runValidators: true }
     );
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     throw new Error("cant update role");
   }
 }

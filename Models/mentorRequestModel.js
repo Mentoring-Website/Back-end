@@ -1,55 +1,41 @@
 const mongoose = require("mongoose");
+const Profile = require("../Models/profileModel");
 
-const mainkeys = { type: String, required: true };
-
-// requestModel && schema///////////////
 const requestSchema = new mongoose.Schema(
   {
-    reqTitle: {
-      ...mainkeys,
-      trim: true,
+    title: {
+        type: String, trim: true,
+        required: [true, "Title is required"],
+        minlength: [3, "too short title name"],
     },
-    reqDesc: {
-      ...mainkeys,
-      trim: true,
+    description: {
+        type: String, trim: true,
+        required: [true, 'Description is required'],
     },
-    reqHelp: {
-      ...mainkeys,
-      trim: true,
-    },
-    ReqRequir: {
-      ...mainkeys,
-      trim: true,
-    },
-    menteeBack: {
-      ...mainkeys,
-      trim: true,
-    },
-    lookingJob: { type: Boolean, required: true, default: false },
+    helpWith: [{type: String}],
+    requirements: [{type: String}],
+    haveBgWith: [{type: String}],
+    lookingJob: { type: Boolean, default: false },
     location: {
-      ...mainkeys,
+        type: String, trim: true,
+        lowercase: true,
+        required: [true, 'Location required']
     },
-    currency: {
-      ...mainkeys,
-      enum: ["USD", "EUR", "GBP", "CAD"],
-      default: "USD"
+    paid: {
+        isPaid: {type: Boolean, default: false},
+        amount: {type: Number, default: 0},
+        currency: {type: String, default: "EGP"}
     },
-    experience: {
-      ...mainkeys,
-    },
-    status: {
-      type: String,
-      enum: ["Pending", "accepted", "Rejected"],
-      default: "Pending",
-    },
+    experience: {type: Number, default: 0},
     duration: {
-      ...mainkeys,
-    },
-    progress: {
-      type: String,
-      enum: ["open", "in progress", "close"],
-      default: "open"
-    },
+      type: Number,
+      required: [true, 'Duration in days required']
+  },
+    progress:{
+      type:String,
+      enum:["open", "in progress", "close"],
+      default:"open"
+  },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -58,31 +44,12 @@ const requestSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    reqPaid: {
-      type: Number,
-      required: true,
-      validate: {
-        validator: function (value) {
-          return value >= 0;
-        },
-        message: "Price must be a non-negative number",
-      },
-    },
   },
   { timestamps: true }
 );
-// Before saving Request we add the situation of it automatically
 
-requestSchema.pre('save', function (next) {
-  if (this.status === 'accepted') {
-    this.progress = 'in progress';
-  } else if (this.status === 'Rejected') {
-    this.progress = 'closed';
-  } else {
-    this.progress = 'open';
-  }
-  next();
-});
+requestSchema.methods.isBusy= function(){
+}
 
 const Request = mongoose.model("Request", requestSchema);
 module.exports = { Request };

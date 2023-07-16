@@ -25,7 +25,6 @@ const acceptingRouter = require('../Routes/acceptingRouter');
 const { logger } = require('../middleware/reglogger')
 const errorHandle = require('../middleware/errorLogger')
 const corsOptions = require('../config/corsOptions')
-const calendar = require("../Routes/calenderRouter")
 const download = require('../Routes/downloadRouter')
 
 const port = process.env.PORT || 5000
@@ -49,7 +48,6 @@ app.use('/api/v1', menteeRouter);
 app.use('/api/v1', messageRouter);
 app.use('/api/v1', socialLoginRouter);
 app.use('/api/v1', commentRouter);
-app.use('/api/v1', calendar)
 app.use("/uploads", express.static("uploads"));
 app.use('/api/v1', download)
 

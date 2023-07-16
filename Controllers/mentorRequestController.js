@@ -2,7 +2,7 @@ const { Request } = require("../Models/mentorRequestModel");
 
 // postRequests////////////////////////
 const postRequests = (req, res) => {
-  const request = new Request({ ...req.body, mentee: req.user._id });
+  const request = new Request({ ...req.body, owner: req.user._id });
   request
     .save()
     .then((request) => {
@@ -53,6 +53,7 @@ const patchRequets = async (req, res) => {
     if (!request) {
       return res.status(404).send("No request is found");
     }
+    if(request.progress != "open") throw new Error(`Cannot edit, this request is already ${request.progress}`)
 
     res.status(200).send(request);
   } catch (error) {
@@ -69,6 +70,8 @@ const deleteRequests = async (req, res) => {
     if (!request) {
       return res.status(404).send("Unable to find request");
     }
+    if(request.progress != "open") res.status(400).send(`Cannot delete, this request is already ${request.progress}`)
+
     res.status(200).send(request);
   } catch (e) {
     res.status(500).send(e.message);
