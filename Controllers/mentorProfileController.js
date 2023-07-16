@@ -5,17 +5,11 @@ const PostMentor =  (req, res) => {
     let avatar = req.file ? req.file.fieldname : ""
     const avatarPath = req.file ? req.file.path : "";
     let mentor = new Profile({
-      lookingFor: req.body.lookingFor,
-      designation: req.body.designation,
-      location: req.body.location,
-      yearsOfExperence: req.body.yearsOfExperence,
-      avatar: avatar,
-      expertise: req.body.expertise,
-      currentCompany: req.body.currentCompany,
+      ...req.body,
+      lookingFor: req.body.lookingFor? req.body.lookingFor: "mentee",
+      avatar,
       user: req.user._id,
     });
-
-    mentor.user = req.user._id;
     mentor.updateRole(mentor);
 
     mentor
@@ -24,10 +18,8 @@ const PostMentor =  (req, res) => {
         res.status(200).send(response);
       })
       .catch((error) => {
+        if (avatar) deleteUploadedAvatar(avatarPath)
         res.status(400).send(error.message);
-        if (avatar) {
-          deleteUploadedAvatar(avatarPath)
-        }
       });
 };
 
@@ -90,11 +82,8 @@ const PatchMentor = async (req, res) => {
   try {
     const _id = req.params.id;
     const mentor = await Profile.findByIdAndUpdate(_id, {
-      lockingFor: req.body.lockingFor,
-      designation: req.body.designation,
-      location: req.body.location,
+      ...req.body,
       avatar: req.file ? req.file.filename : "",
-
     }, {
       new: true,
       runValidators: true,

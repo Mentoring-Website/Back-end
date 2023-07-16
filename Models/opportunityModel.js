@@ -1,78 +1,42 @@
 const mongoose = require('mongoose');
-mongoose.set('strictQuery', true); // Set strictQuery option to false
+const Profile = require("../Models/profileModel");
 
 // create schema
 const opportunitySchema = mongoose.Schema({
     title: {
-        type: String,
-        required: [true, "Title required"],
+        type: String, trim: true,
+        required: [true, "Title is required"],
         minlength: [3, "too short title name"],
     },
     description: {
-        type: String,
-        required: [true, 'Description required'],
+        type: String, trim: true,
+        required: [true, 'Description is required'],
     },
     certificate: {
-        type: String,
-        default: 'Awarded'
+        type: Boolean, 
+        default: false
     },
     duration: {
-        type: String,
-        required: [true, 'Duration required']
+        type: Number,
+        required: [true, 'Duration in days required']
     },
     location: {
-        type: String,
+        type: String, trim: true,
+        lowercase: true,
         required: [true, 'Location required']
     },
-    hired: {
+    getHired: {
         type: Boolean,
         default: false
     },
     paid: {
-        type: Boolean,
-        default: false
+        isPaid: {type: Boolean, default: false},
+        amount: {type: Number, default: 0},
+        currency: {type: String, default: "EGP"}
     },
-    amount: {
-        type: Number,
-        required: [true, 'Amount required']
-    },
-    currency: {
-        type: String,
-        default: 'USD'
-    },
-    respons: {
-        type: String,
-        default: ""
-    },
-    requires: {
-        type: String,
-        default: ""
-    },
-    expOutcome: {
-        type: String,
-        default: ""
-    },
-    startDate: {
-        type: Date,
-        required: true,
-    },
-    endDate: {
-        type: Date,
-        required: true,
-    },
-    daysInWeek: {
-        type: [String],
-        required: true,
-        enum: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-        ],
-    },
+    responsibilities: [{type: String}],
+    requirements: [{type: String}],
+    expOutcome: [{type: String}],
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
@@ -85,25 +49,11 @@ const opportunitySchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-},
-    //to create tow document in database with category
-    { timestamp: true }
+},{ timestamp: true }
 );
-// Before saving we add status of opportunity to the req
-opportunitySchema.pre('save', function (next) {
-    // const currentDate = new Date();
-  
-    // if (currentDate > this.startDate && currentDate <= this.endDate) {
-    //   this.progress = 'in progress';
-    // } else if (currentDate > this.endDate) {
-    //   this.progress = 'closed';
-      
-    // } else {
-    //   this.progress = 'open';
-    // }
-  
-    next();
-  });
+
+opportunitySchema.methods.isBusy= function(){
+}
 // create model
 const Opportunity = mongoose.model('opportunity', opportunitySchema);
-module.exports = { Opportunity };
+module.exports = Opportunity;
